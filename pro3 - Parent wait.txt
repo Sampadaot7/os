@@ -1,0 +1,36 @@
+#include<stdlib.h>
+#include<stdio.h>
+#include<unistd.h>
+#include<sys/wait.h>
+void childtask()
+{
+    printf("Child!!\n");
+}
+void parenttask()
+{
+    printf("Parent!!\n");
+}
+void main()
+{
+    int i;
+    for(i=0;i<=5;i++)
+    {
+        pid_t pid=fork();
+        if(pid==0)
+        {
+            printf("Child process--ppid  %d, pid %d\n",getppid(),getpid());
+            childtask();
+            exit(0);
+        }
+        else
+        {
+            printf("Parent process-- pid %d\n",getpid());
+            printf("WAiting for child\n");
+            wait(NULL);
+            printf("Child finished\n");
+            parenttask();
+            
+        }
+    }
+    printf("Parent finished\n");
+}
